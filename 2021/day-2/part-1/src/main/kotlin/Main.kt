@@ -1,20 +1,19 @@
 import java.io.File
 
 fun main() {
-    var x = 0
-    var y = 0
+    var horizontalPosition = 0
+    var depth = 0
 
     File("src/main/kotlin/input.txt")
         .readLines()
         .map {
-            val (k, v) = it.split(" ")
-            val value = v.toInt()
-            when (k) {
-                "forward" -> x += value
-                "up" -> y -= value
-                "down" -> y += value
+            val (command, value) = it.split(" ")
+            when (command) {
+                "forward" -> horizontalPosition += value.toInt()
+                "up" -> depth -= value.toInt()
+                "down" -> depth += value.toInt()
             }
         }
 
-    println("Answer: ${x * y}")
+    println("Answer: ${horizontalPosition * depth}")
 }

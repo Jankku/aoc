@@ -1,31 +1,26 @@
 import java.io.File
 
 fun main() {
+    val start = System.currentTimeMillis()
     val zeroCounter = IntArray(12)
-    val oneCounter = IntArray(12)
-    var gammaRate = ""
-    var epsilonRate = ""
-    File("src/main/kotlin/input.txt")
+
+    val input = File("src/main/kotlin/input.txt")
         .readLines()
         .map {
             for (i in it.indices) {
-                when (it[i].toString()) {
-                    "0" -> zeroCounter[i]++
-                    "1" -> oneCounter[i]++
-                }
+                if (it[i] == '0') zeroCounter[i]++
             }
         }
-    zeroCounter.zip(oneCounter) { zeroCount, oneCount ->
-        when {
-            zeroCount > oneCount -> {
-                gammaRate += "0"
-                epsilonRate += "1"
-            }
-            oneCount > zeroCount -> {
-                gammaRate += "1"
-                epsilonRate += "0"
-            }
-        }
+
+    val gammaRate = mutableListOf<Int>()
+
+    for (i in zeroCounter.indices) {
+        if (zeroCounter[i] > input.size / 2) gammaRate.add(0) else gammaRate.add(1)
     }
-    println("Answer: ${gammaRate.toInt(2) * epsilonRate.toInt(2)}")
+
+    val epsilonRate = gammaRate.map { 1 - it }
+
+    println("Answer: ${gammaRate.joinToString("").toInt(2) * epsilonRate.joinToString("").toInt(2)}")
+    val end = System.currentTimeMillis()
+    println("${end - start} ms")
 }
